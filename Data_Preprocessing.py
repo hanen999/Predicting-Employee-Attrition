@@ -1,73 +1,34 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[113]:
-
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-# In[ ]:
-
-
 data = pd.read_csv('file_location/WA_Fn-UseC_-HR-Employee-Attrition.csv')
-
-
-# In[115]:
-
 
 display(data)
 
-
-# In[116]:
-
-
 data.isnull().sum()
-
-
-# In[117]:
-
 
 data.shape
 
-
-# In[118]:
-
-
 #small dataset => use ML algorithms instead of deep learning 
-
-
-# In[119]:
 
 
 #Discover the dataset
 
 
-# In[120]:
-
-
 data.dtypes.value_counts()
 
-
-# In[121]:
 
 
 data1 = data.select_dtypes(include=['object'])
 display(data1.head())
 
-
-# In[122]:
-
-
 for column in data1.columns:
     unique_values = data1[column].unique()
     print(f"values of column '{column}':\n{unique_values}\n")
-
-
-# In[123]:
-
 
 # Define mappings for specific columns
 column_mappings = {
@@ -100,8 +61,6 @@ data.replace(column_mappings, inplace=True)
 display(data.head())
 
 
-# In[125]:
-
 
 # Split data into features and target.  Attrition is our target
 
@@ -113,32 +72,12 @@ data_y= data["Attrition"]
 data_x = data.drop("Attrition", axis=1)
 
 
-# In[127]:
-
-
-data_y
-
-
-# In[ ]:
-
-
-
-
-
-# In[128]:
-
 
 data_x = data.drop("Attrition", axis=1)
 data_x
 
-
-# In[129]:
-
-
 #we have some columns that contains only one unique value (e.g., all values are 1), it is a good choice to drop these columns.
 
-
-# In[130]:
 
 
 # Capture the list of columns to be dropped
@@ -146,28 +85,11 @@ dropped_columns = data_x.columns[data_x.nunique() == 1]
 
 # Print the list of dropped columns
 print("Dropped Columns:", dropped_columns)
-
-
-# In[131]:
-
-
 # Drop the constant columns and update the DataFrame
 data_x = data_x.loc[:, data.nunique() > 1]
 
 
-# In[ ]:
-
-
-
-
-
-# In[132]:
-
-
 from scipy.stats import skew
-
-
-# In[133]:
 
 
 def determine_scaling_method(column):
@@ -183,16 +105,11 @@ def determine_scaling_method(column):
         return "No Scaling Required"
 
 
-# In[134]:
-
-
 # Loop through each column and determine scaling method
 for column in data_x.columns:
     scaling_method = determine_scaling_method(data_x[column])
     print(f"Feature '{column}' should use: {scaling_method}")
 
-
-# In[135]:
 
 
 def scale_feature(column):
