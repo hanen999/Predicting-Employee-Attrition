@@ -9,26 +9,23 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.model_selection import train_test_split
-
-
+from sklearn.ensemble import RandomForestClassifier
+import xgboost as xgb
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
+from sklearn.metrics import classification_report, roc_curve, roc_auc_score
+import matplotlib.pyplot as plt
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
 # In[17]:
 
 
-x=pd.read_csv('scaled_x_data.csv')
-y=pd.read_csv('y_data.csv')
+x=pd.read_csv('/mnt/scaled_x_data.csv')
+y=pd.read_csv('/mnt/y_data.csv')
 
 
 # #Data Splitting: Since the dataset is limited in size., an 80/20 split would be reasonable 
-
-# In[ ]:
-
-
-##############################
-
-
-# In[ ]:
-
-
 
 
 
@@ -96,8 +93,6 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_
 # In[78]:
 
 
-from sklearn.ensemble import RandomForestClassifier
-import xgboost as xgb
 
 
 # Create a Random Forest classifier
@@ -123,7 +118,6 @@ xgb_model.fit(x_train, y_train)
 # In[36]:
 
 
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 
 
 # In[79]:
@@ -148,8 +142,6 @@ print(f"F1-Score: {rf_f1}")
 print(f"ROC AUC: {rf_roc_auc}")
 print(f"Confusion Matrix:\n{rf_confusion}")
 
-
-# In[80]:
 
 
 # Predictions from XGBoost model
@@ -181,9 +173,6 @@ print(f"Confusion Matrix:\n{xgb_confusion}")
 # In[54]:
 
 
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix
 
 # Create a Decision Tree classifier
 dt_model = DecisionTreeClassifier(random_state=42)
@@ -239,7 +228,6 @@ print(f"Confusion Matrix:\n{dt_confusion_tuned}")
 # In[63]:
 
 
-from sklearn.model_selection import GridSearchCV
 
 # Define a grid of hyperparameters to search
 param_grid_rf = {
@@ -428,7 +416,6 @@ print(feature_importance_df)
 # In[65]:
 
 
-from sklearn.metrics import confusion_matrix
 
 # Calculate the confusion matrix for Random Forest (tuned)
 rf_confusion_tuned = confusion_matrix(y_test, rf_predictions_tuned)
@@ -466,7 +453,7 @@ print(f"Sensitivity (Recall) for XGBoost: {sensitivity_xgb}")
 
 
 # Example for Random Forest (tuned):
-from sklearn.metrics import classification_report
+
 # Function to adjust threshold and calculate sensitivity
 def adjust_threshold_and_evaluate(model, x, y, threshold):
     y_prob = model.predict_proba(x)[:, 1]  # Get probability scores for the positive class
@@ -575,8 +562,7 @@ plt.show()
 
 
 # Example for XGBoost (not_tuned):
-from sklearn.metrics import classification_report, roc_curve, roc_auc_score
-import matplotlib.pyplot as plt
+
 
 # Function to adjust threshold and calculate sensitivity
 def adjust_threshold_and_evaluate(model, x, y, threshold):
